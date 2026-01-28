@@ -1,0 +1,69 @@
+.container{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+#top_container{
+    height: 40vh;
+    color: white;
+    background-color: #6943ff;
+}
+
+#bottom_container{
+    height: 60vh;
+    color: #CCC1FF;
+    background-color: #1F2937;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.conversion_section{
+    background-color: #273549;
+    width: 100%;
+    height: 15vh;
+    border: none;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+#input_value{
+    width: 15%;
+    height: 10vh;
+    border: 1px solid #B295FF;
+    background-color: #6943ff;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 400%;
+    font-weight: bolder;
+}
+#convert_button{
+    width: 15%;
+    height: 6vh;
+    background-color: #FFFFFF;
+    color: 3D3D3D;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 150%;;
+}
+
+.conversion_section p{
+    color: white;
+    margin-bottom: 3vh;
+    margin-top: 0;
+}
+.conversion_section h2{
+    margin-bottom: 0;;
+}
