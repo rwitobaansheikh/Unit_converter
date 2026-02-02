@@ -7,6 +7,9 @@ const convertBtn = document.getElementById("convert_button");
 //20 meters = 65.616 feet | 20 feet = 6.096 meters
 
 convertBtn.addEventListener("click", function(){
+    lengthResult.innerHTML="";
+    volumeResult.innerHTML="";
+    massResult.innerHTML="";
     const value=Number(inputValue.value);
     const metersToFeet = (value * 3.28084).toFixed(3);
     const feetToMeters = (value / 3.28084).toFixed(3);
