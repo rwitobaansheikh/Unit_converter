@@ -1,0 +1,49 @@
+name: Build and Deploy Unit Converter
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR Public
+        run: |
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u6o5d5r2
+
+      - name: Build, Tag, and Push Image to ECR Public
+        run: |
+          docker build -t unit_converter .
+          docker tag unit_converter:latest public.ecr.aws/u6o5d5r2/unit_converter:latest
+          docker push public.ecr.aws/u6o5d5r2/unit_converter:latest
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }} # Put your EC2 Public IP in GitHub Secrets
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Authenticate Docker on the EC2 instance
+            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u6o5d5r2
+            
+            # Pull the latest image
+            docker pull public.ecr.aws/u6o5d5r2/unit_converter:latest
+            
+            # Stop and remove the old container if it exists
+            docker stop unit-container || true
+            docker rm unit-container || true
+            
+            # Run the new container
+            docker run -d --name unit-container -p 80:80 public.ecr.aws/u6o5d5r2/unit_converter:latest
