@@ -51,4 +51,8 @@ jobs:
             sudo fuser -k 80/tcp || true
             
             # 3. Run the new container
-            docker run -d --name unit-converter -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 public.ecr.aws/u6o5d5r2/unit_converter:latest
+            docker run -d --name unit-converter \
+            -p 80:80 \
+            -p 443:443 \
+            -v /etc/letsencrypt:/etc/letsencrypt \
+            public.ecr.aws/u6o5d5r2/unit_converter:latest
