@@ -41,10 +41,14 @@ jobs:
             # Pull the latest image
             docker pull public.ecr.aws/u6o5d5r2/unit_converter:latest
             
-            # Stop and remove the old container if it exists
-            docker stop $(docker ps -q --filter "publish=80") || true
-            # docker stop unit-converter || true
-            docker rm unit-converter || true
+            docker stop unit-converter || true
+            # docker rm unit-converter || true
             
-            # Run the new container
+            # 1. Force remove the container by name
+            docker rm -f unit-converter || true
+            
+            # 2. Kill anything else on Port 80 (including non-docker processes)
+            sudo fuser -k 80/tcp || true
+            
+            # 3. Run the new container
             docker run -d --name unit-converter -p 80:80 public.ecr.aws/u6o5d5r2/unit_converter:latest
