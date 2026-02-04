@@ -56,3 +56,5 @@ jobs:
             -p 443:443 \
             -v /etc/letsencrypt:/etc/letsencrypt \
             public.ecr.aws/u6o5d5r2/unit_converter:latest
+
+            docker image prune -a -f
